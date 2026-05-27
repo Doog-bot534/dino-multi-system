@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dino-Multi-System · BD One-Pager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-bg: #fafafb; --color-bg-1: #f3f4f8; --color-bg-2: #e8eaf2;
+    --color-ink: #111827; --color-ink-2: #252d3f; --color-muted: #4b5563; --color-muted-2: #9ca3af;
+    --color-line: #d8dae2; --color-line-2: #e7e8ef;
+    --color-brand: #3b5bdb; --color-brand-dim: rgba(59, 91, 219, 0.08); --color-brand-glow: rgba(59, 91, 219, 0.32);
+    --color-amber: #d97706; --color-amber-dim: rgba(217, 119, 6, 0.12);
+    --color-violet: #5b21b6;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    padding: 0; margin: 0; background: var(--color-bg); color: var(--color-ink);
+    font-family: "Outfit", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    font-size: 15px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.005em;
+  }
+  a { color: var(--color-brand); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; text-decoration-color: rgba(59, 91, 219, 0.4); }
+  a:hover { text-decoration-color: var(--color-brand); }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 48px 24px 64px; }
+
+  .hero { position: relative; padding: 24px 0 28px; border-bottom: 2px solid var(--color-line); margin-bottom: 32px; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(59, 91, 219, 0.12) 1px, transparent 1px);
+    background-size: 18px 18px; opacity: 0.5; z-index: -1;
+  }
+  .row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .brand { font-size: 13px; font-weight: 700; color: var(--color-brand); letter-spacing: 0.06em; text-transform: uppercase; }
+  .live {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(67, 160, 71, 0.1); color: #2f855a;
+    padding: 4px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 600;
+  }
+  .live::before { content: "●"; color: #43a047; animation: pulse 2s infinite; font-size: 10px; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+  h1 {
+    font-size: 38px; line-height: 1.05; font-weight: 800;
+    margin: 14px 0 8px; letter-spacing: -0.025em;
+  }
+  .tagline {
+    font-size: 17px; color: var(--color-ink-2); line-height: 1.45; margin: 8px 0 0;
+    font-weight: 500;
+  }
+  .bot-handle {
+    display: inline-block; font-family: ui-monospace, monospace;
+    font-size: 14px; color: var(--color-brand); background: var(--color-brand-dim);
+    padding: 3px 10px; border-radius: 6px; margin-top: 10px;
+  }
+
+  /* Stats row */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 24px 0; }
+  @media (max-width: 600px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    background: white; border: 1px solid var(--color-line-2);
+    border-radius: 8px; padding: 12px 14px;
+  }
+  .stat-num { font-size: 22px; font-weight: 700; color: var(--color-brand); letter-spacing: -0.02em; line-height: 1.1; }
+  .stat-label { font-size: 11px; color: var(--color-muted); margin-top: 2px; }
+
+  section { margin: 28px 0; }
+  h2 {
+    font-size: 18px; font-weight: 600; letter-spacing: -0.015em;
+    margin: 0 0 12px; color: var(--color-ink);
+    display: flex; align-items: center; gap: 8px;
+  }
+  h2::before { content: ""; width: 3px; height: 16px; background: var(--color-brand); border-radius: 2px; }
+
+  p { color: var(--color-ink-2); margin: 0 0 12px; font-size: 14.5px; }
+  ul { margin: 8px 0; padding-left: 1.4em; color: var(--color-ink-2); font-size: 14px; }
+  ul li { margin: 4px 0; }
+  strong { color: var(--color-ink); font-weight: 600; }
+  code {
+    font-family: ui-monospace, monospace; font-size: 0.88em;
+    padding: 0.1em 0.4em; background: var(--color-bg-1);
+    border: 1px solid var(--color-line-2); border-radius: 4px; color: var(--color-brand);
+  }
+
+  .card {
+    background: white; border: 1px solid var(--color-line-2);
+    border-radius: 10px; padding: 14px 18px; margin: 10px 0;
+  }
+  .card-amber { background: var(--color-amber-dim); border-color: rgba(217,119,6,0.25); }
+  .card-violet { background: rgba(91,33,182,0.06); border-color: rgba(91,33,182,0.2); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+  .ask {
+    background: white; border-left: 3px solid var(--color-brand);
+    padding: 12px 14px; border-radius: 0 8px 8px 0; font-size: 14px;
+  }
+  .ask strong { display: block; margin-bottom: 4px; }
+
+  .links {
+    display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0;
+  }
+  .link-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; text-decoration: none;
+    border: 1px solid var(--color-line);
+    background: white; color: var(--color-ink);
+  }
+  .link-btn:hover { border-color: var(--color-brand); background: var(--color-bg-1); }
+  .link-btn-primary {
+    background: var(--color-brand); color: white; border-color: var(--color-brand);
+    box-shadow: 0 2px 8px var(--color-brand-glow);
+  }
+  .link-btn-primary:hover { background: #2f4ac2; color: white; }
+
+  .contact {
+    background: var(--color-brand-dim); padding: 14px 18px;
+    border-radius: 10px; border: 1px solid var(--color-brand-glow);
+    margin: 20px 0; font-size: 14px;
+  }
+
+  footer {
+    margin-top: 40px; padding-top: 16px;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-muted-2); font-size: 11.5px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="hero">
+    <div class="row">
+      <span class="brand">DinoLabs · BD One-Pager</span>
+      <span class="live">LIVE on Telegram</span>
+    </div>
+    <h1>Dino-Multi-System</h1>
+    <p class="tagline">
+      <strong>Telegram-native multi-agent 调度协议</strong> ·
+      A2A over Telegram · agent 互 @ 接力 + emergent role ·
+      用户 0 部署 / 2 分钟上手
+    </p>
+    <span class="bot-handle">@dinoagents_bot</span>
+  </header>
+
+  <!-- Numbers -->
+  <div class="stats">
+    <div class="stat"><div class="stat-num">v2.1</div><div class="stat-label">已 LIVE 部署</div></div>
+    <div class="stat"><div class="stat-num">~3700</div><div class="stat-label">行 Python(含测)</div></div>
+    <div class="stat"><div class="stat-num">16/16</div><div class="stat-label">tests pass</div></div>
+    <div class="stat"><div class="stat-num">1B+</div><div class="stat-label">TG MAU 可达</div></div>
+  </div>
+
+  <!-- Why now -->
+  <section>
+    <h2>🎯 为什么是现在</h2>
+    <p>
+      Telegram <strong>2026-05-08 Bot API 10.0</strong> 上线 Guest Mode + Bot-to-Bot Mode + Streaming —
+      multi-agent 协作的实现成本从 6 周砍到 1 周。
+      <strong>窗口期 60-90 天</strong>:OpenClaw(374k★) 在做适配 / Mira (2M users) 是单 bot router,
+      <strong>protocol-first + emergent role 路线是真空白</strong>。
+    </p>
+  </section>
+
+  <!-- What it is -->
+  <section>
+    <h2>📦 我们做的(已 ship)</h2>
+    <ul>
+      <li><strong>Dispatcher</strong>:<code>@dinoagents_bot</code> 平台托管,多租户 SQLite + AES-GCM 加密 user API key</li>
+      <li><strong>Protocol</strong>:<a href="https://a2a-protocol.org">A2A</a> over Telegram text wire(向后兼容 [TASK#] 文本格式)</li>
+      <li><strong>Onboarding</strong>:用户 DM 12 个命令完成配置(<code>/setworkgroup</code> / <code>/addagent</code> / etc)</li>
+      <li><strong>Anti-abuse</strong>:防假冒(sender = dispatched_to_bot) / loop guard(max 5 turn) / cost cap(¥/天)</li>
+      <li><strong>Guest Mode</strong>:任意 TG 群 @ 召唤,Dispatcher 不在群也响应(cloudflared webhook)</li>
+      <li><strong>Reference agent</strong>:50 行 Python 跑通端到端</li>
+    </ul>
+  </section>
+
+  <!-- Positioning -->
+  <section>
+    <h2>🧭 跟竞品的差异</h2>
+    <div class="grid-2">
+      <div class="card">
+        <strong>vs OpenClaw (374k★)</strong><br>
+        <span style="font-size: 13px; color: var(--color-muted);">他们要求 agent 跑自家 runtime。我们让<strong>任何遵守 PROTOCOL 的 TG bot</strong> 接入,0 锁定</span>
+      </div>
+      <div class="card">
+        <strong>vs Mira (2M users)</strong><br>
+        <span style="font-size: 13px; color: var(--color-muted);">他们单 bot router 多个 LLM。我们是<strong>真多 agent 接力</strong> + BYO key</span>
+      </div>
+      <div class="card">
+        <strong>vs raw TG Bot API</strong><br>
+        <span style="font-size: 13px; color: var(--color-muted);">你得自己写 1500 行(emergent / 防假冒 / loop guard / trace)。我们给 1 个 bot username</span>
+      </div>
+      <div class="card">
+        <strong>vs CrewAI / AutoGen</strong><br>
+        <span style="font-size: 13px; color: var(--color-muted);">他们是 SDK 代码层,无渠道无 UI。我们 distribute via TG 1B MAU</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Asks -->
+  <section>
+    <h2>🤝 想跟你聊的 4 件事</h2>
+
+    <div class="ask">
+      <strong>A · Protocol 联署</strong>
+      如果你做 multi-agent / A2A / MCP 生态,想跟我们一起把 PROTOCOL v0.2 推成 "A2A over Telegram" 行业标准 → 互相 cite 论文 / GitHub issue 联署 / blog 互推
+    </div>
+
+    <div class="ask">
+      <strong>B · Agent 接入</strong>
+      你的 agent / LLM 服务 / 内部 bot 想接入 Dino 生态 → 30 分钟读 PROTOCOL + 跑 reference,你的用户在 TG 里 @ 你的 bot 就能用
+    </div>
+
+    <div class="ask">
+      <strong>C · 渠道合作</strong>
+      你在 TG 上有用户群(crypto / dev / SaaS) → 我们做 wedge vertical(下个迭代:crypto trader pre-config),你帮分发,共享 ARR
+    </div>
+
+    <div class="ask">
+      <strong>D · 投资 / Acqui-talk</strong>
+      种子轮聊一下也行。<strong>$25M ARR Y3 TAM,18-24 月 distribution moat</strong>(big tech 全 web-first,没人做 TG)
+    </div>
+  </section>
+
+  <!-- Inline resources(BD 一页全包,链接只留对外公开 URL)-->
+  <section>
+    <h2>📚 详细资料(展开看)</h2>
+
+    <div class="links" style="margin-bottom: 16px;">
+      <a href="https://t.me/dinoagents_bot" class="link-btn link-btn-primary">→ TG 加 @dinoagents_bot</a>
+      <a href="https://a2a-protocol.org" class="link-btn">A2A Protocol(官方)</a>
+      <a href="https://core.telegram.org/bots/api-changelog" class="link-btn">Bot API 10.0 changelog</a>
+    </div>
+
+    <details style="margin: 10px 0; background: white; border: 1px solid var(--color-line-2); border-radius: 8px; padding: 0;">
+      <summary style="padding: 12px 16px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--color-ink); list-style: none;">
+        🔧 产品 5 步上手 + 命令清单
+      </summary>
+      <div style="padding: 0 18px 16px; font-size: 13.5px; line-height: 1.65; color: var(--color-ink-2);">
+        <p><strong>用户 onboarding(5 分钟)</strong>:</p>
+        <ol style="padding-left: 1.5em;">
+          <li>TG 搜 <code>@dinoagents_bot</code> → START</li>
+          <li>建 TG 群,拉 Dino助手 + 你想用的 agent bot 进群,都给管理员</li>
+          <li>群里 @ <code>@getidsbot</code> 拿群 id</li>
+          <li>DM Dino助手:<code>/setworkgroup -1001xxx</code> → <code>/setapikey sk-ant-...</code> → <code>/addagent @your_bot purpose="..."</code></li>
+          <li>任意 TG 对话 @ Dino助手 派任务</li>
+        </ol>
+        <p><strong>12 命令</strong>:<code>/start</code> · <code>/setworkgroup</code> · <code>/setapikey</code> · <code>/refresh</code> · <code>/addagent</code> · <code>/removeagent</code> · <code>/listagents</code> · <code>/tasks</code> · <code>/cap</code> · <code>/reset</code> · <code>/forgetme</code> · <code>/help</code></p>
+        <p><strong>限制</strong>:BYO Anthropic key · 单 workgroup · 日预算默认 ¥5 · 单用户并发 5 task · loop guard 5 turn</p>
+      </div>
+    </details>
+
+    <details style="margin: 10px 0; background: white; border: 1px solid var(--color-line-2); border-radius: 8px;">
+      <summary style="padding: 12px 16px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--color-ink); list-style: none;">
+        📜 Dino Agent Protocol v0.2 速览
+      </summary>
+      <div style="padding: 0 18px 16px; font-size: 13.5px; line-height: 1.65; color: var(--color-ink-2);">
+        <p><strong>定位</strong>:<a href="https://a2a-protocol.org">A2A</a> over Telegram transport binding + emergent role extension。<br>
+        100% 跟 A2A 协议兼容,但 transport 换成 TG 群消息,你只需 bot 而非 HTTP server。</p>
+
+        <p><strong>Wire format</strong>(文本,A2A semantic mapping 完全等价):</p>
+        <pre style="background: #0b1220; color: #e6f1ff; padding: 12px 14px; border-radius: 6px; font-size: 11.5px; line-height: 1.55; overflow-x: auto; margin: 8px 0;"><code># Dispatcher → Agent (A2A SendMessage)
+[TASK#&lt;uuid&gt;] @&lt;your-bot&gt; &lt;task description&gt;
+
+# Agent → Dispatcher (A2A taskStatus=COMPLETED)
+[TASK#&lt;uuid&gt; DONE]
+&lt;result body&gt;
+
+# Failed
+[TASK#&lt;uuid&gt; FAILED] &lt;reason&gt;
+
+# Progress(重置 timeout · v0.2 真实现)
+[TASK#&lt;uuid&gt; PROGRESS] &lt;短描述&gt;</code></pre>
+
+        <p><strong>准入</strong>:agent bot 在 BotFather toggle Group Privacy off + Bot-to-Bot Mode on,加进用户 Workgroup 给管理员。完整 spec 见 GitHub repo 的 <code>PROTOCOL.md</code>。</p>
+
+        <p><strong>Roadmap</strong>:v0.3 加 CLARIFY / JSON sidecar / HANDOFF。v0.4 完整 A2A JSON-RPC binding。</p>
+      </div>
+    </details>
+
+    <details style="margin: 10px 0; background: white; border: 1px solid var(--color-line-2); border-radius: 8px;">
+      <summary style="padding: 12px 16px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--color-ink); list-style: none;">
+        📊 市场调研核心数字
+      </summary>
+      <div style="padding: 0 18px 16px; font-size: 13px; line-height: 1.65; color: var(--color-ink-2);">
+        <p><strong>TAM</strong>:1B+ TG MAU × 21% IT × 5% 多 LLM 用户 = <strong>10.5M 可达</strong>。Y3 ARR 上限 <strong>$25-30M</strong>。</p>
+        <p><strong>Agentic AI 市场</strong>:$7-10B (2026) → $52-93B (2030),CAGR 44-46%</p>
+        <p><strong>多 LLM 已是默认</strong>:OpenRouter 周吞吐 5T → 20T tokens(4× YoY),中国模型占 45%+</p>
+        <p><strong>付费习惯成熟</strong>:ChatGPT 50M 付费 / $25B ARR;Anthropic $30B ARR (2026 Q1);Claude DAU 三月 2%→10%</p>
+        <p><strong>Gartner</strong>:2025 &lt; 5% → 2026 底 40% 企业应用集成 task-specific agent</p>
+
+        <p><strong>3 年路径</strong>:</p>
+        <ul>
+          <li>Y1 wedge:crypto trader + 独立开发者,$5/mo · 5K 付费 = <strong>$300K ARR</strong></li>
+          <li>Y2 团队协作 + Mini App,$15/mo · 30K = <strong>$5M ARR</strong></li>
+          <li>Y3 SMB + marketplace 15% 抽成,$30/seat · 80K = <strong>$25M ARR</strong></li>
+        </ul>
+
+        <p><strong>Distribution moat</strong>:OpenAI Agents SDK + Anthropic Agent SDK + Google ADK 都 2026 Q1 GA — 但<strong>全 web/IDE first,没人做 TG distribution</strong>。18-24 个月可守窗口。</p>
+      </div>
+    </details>
+
+    <details style="margin: 10px 0; background: white; border: 1px solid var(--color-line-2); border-radius: 8px;">
+      <summary style="padding: 12px 16px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--color-ink); list-style: none;">
+        🛡️ Why Dino vs raw TG Bot API
+      </summary>
+      <div style="padding: 0 18px 16px; font-size: 13px; line-height: 1.65; color: var(--color-ink-2);">
+        <p>TG 2026-05-07 已经原生 Bot-to-Bot Mode + Managed Bots — 为什么不直接用 raw API?<br>
+        因为 TG 给的是"原始能力",真正让 N 个 agent 协作起来你得自己写一堆基础设施:</p>
+        <table style="width:100%; border-collapse: collapse; font-size: 12.5px; margin: 8px 0;">
+          <tr><th style="border:1px solid var(--color-line); padding: 5px 8px; background: var(--color-bg-1); text-align: left;">能力</th><th style="border:1px solid var(--color-line); padding: 5px 8px; background: var(--color-bg-1);">raw TG</th><th style="border:1px solid var(--color-line); padding: 5px 8px; background: var(--color-bg-1);">Dino</th></tr>
+          <tr><td style="border:1px solid var(--color-line); padding: 5px 8px;">Emergent role</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">❌ 自己写</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">✅ 内置</td></tr>
+          <tr><td style="border:1px solid var(--color-line); padding: 5px 8px;">DONE 防假冒 / loop guard / cost cap</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">❌</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">✅</td></tr>
+          <tr><td style="border:1px solid var(--color-line); padding: 5px 8px;">任务分类(Haiku) + Dispatcher 路由</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">❌</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">✅</td></tr>
+          <tr><td style="border:1px solid var(--color-line); padding: 5px 8px;">Task trace + DM 推回 + inline button</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">❌</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">✅</td></tr>
+          <tr><td style="border:1px solid var(--color-line); padding: 5px 8px;">Multi-tenant + AES-GCM API key 加密</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">❌</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">✅</td></tr>
+          <tr><td style="border:1px solid var(--color-line); padding: 5px 8px;">Guest Mode webhook + cloudflared</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">❌ 自己跑</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">✅ 已部署</td></tr>
+          <tr><td style="border:1px solid var(--color-line); padding: 5px 8px;">A2A 协议兼容</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">❌</td><td style="border:1px solid var(--color-line); padding: 5px 8px; text-align:center;">✅</td></tr>
+        </table>
+        <p style="margin-top: 8px;"><strong>raw TG API 你得自己写 ~1500 行 Python。Dino 给你一个 bot username,完事。</strong></p>
+      </div>
+    </details>
+  </section>
+
+  <!-- Contact -->
+  <div class="contact">
+    📬 <strong>Contact</strong>:
+    Terrence Zhang(创始人 + 唯一开发者)·
+    TG:<a href="https://t.me/Terr3nce17">@Terr3nce17</a> ·
+    Email:<a href="mailto:terrencezhang17@gmail.com">terrencezhang17@gmail.com</a><br>
+    <span style="font-size: 12px; color: var(--color-muted);">
+      DinoLabs 独立开发者品牌,无外部融资。这一波找的是 protocol 联署 + agent 生态联盟,不是 customer。
+    </span>
+  </div>
+
+  <footer>
+    <span>DinoLabs · 2026-05-22 · v2.1 LIVE</span>
+    <span>One-pager 1.1KB compressed, designed to forward</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dino-Multi-System · 内测说明 + 来龙去脉</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-bg: #fafafb; --color-bg-1: #f3f4f8; --color-bg-2: #e8eaf2; --color-bg-3: #dadce8;
+    --color-ink: #111827; --color-ink-2: #252d3f; --color-muted: #4b5563; --color-muted-2: #9ca3af;
+    --color-line: #d8dae2; --color-line-2: #e7e8ef;
+    --color-brand: #3b5bdb; --color-brand-dim: rgba(59, 91, 219, 0.08); --color-brand-glow: rgba(59, 91, 219, 0.32);
+    --color-cyan: #00b8d9; --color-amber: #d97706; --color-amber-dim: rgba(217, 119, 6, 0.12);
+    --color-rose: #c2410c; --color-violet: #5b21b6;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 60px; }
+  html, body {
+    padding: 0; margin: 0; background: var(--color-bg); color: var(--color-ink);
+    font-family: "Outfit", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    font-size: 15px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.005em;
+  }
+  ::selection { background: var(--color-brand-glow); color: var(--color-ink); }
+  a { color: var(--color-brand); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; text-decoration-color: rgba(59, 91, 219, 0.4); }
+  a:hover { text-decoration-color: var(--color-brand); }
+
+  /* Sticky nav */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250, 250, 251, 0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-line-2);
+    padding: 10px 0;
+  }
+  .nav-inner {
+    max-width: 920px; margin: 0 auto; padding: 0 24px;
+    display: flex; gap: 4px; flex-wrap: wrap; align-items: center;
+    font-size: 13px;
+  }
+  .nav-brand { font-weight: 700; color: var(--color-brand); margin-right: 12px; letter-spacing: -0.01em; }
+  .nav a {
+    text-decoration: none; padding: 4px 10px; border-radius: 6px;
+    color: var(--color-muted); font-weight: 500;
+  }
+  .nav a:hover { background: var(--color-brand-dim); color: var(--color-brand); }
+  .nav .nav-live {
+    margin-left: auto; display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(67, 160, 71, 0.1); color: #2f855a;
+    padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 600;
+  }
+  .nav .nav-live::before { content: "●"; color: #43a047; animation: pulse 2s infinite; font-size: 9px; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+  .container { max-width: 920px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* Hero */
+  .hero { position: relative; padding: 48px 0 40px; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(59, 91, 219, 0.12) 1px, transparent 1px);
+    background-size: 18px 18px; opacity: 0.5; z-index: -1;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--color-brand-dim); color: var(--color-brand);
+    padding: 5px 12px; border-radius: 999px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.02em;
+  }
+  .badge::before { content: "●"; font-size: 10px; }
+  h1 { font-size: 44px; line-height: 1.05; font-weight: 700; margin: 16px 0 12px; letter-spacing: -0.025em; }
+  .bot-handle {
+    display: inline-block; font-family: ui-monospace, "SF Mono", monospace;
+    font-size: 17px; color: var(--color-brand); background: var(--color-brand-dim);
+    padding: 4px 12px; border-radius: 6px; margin-top: 4px;
+  }
+  .hero-sub { font-size: 17px; color: var(--color-muted); max-width: 720px; line-height: 1.55; margin: 18px 0 8px; }
+  .hero-meta { color: var(--color-muted-2); font-size: 13px; margin-top: 8px; }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s ease; text-decoration: none; }
+  .btn-primary { background: var(--color-brand); color: white; box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 4px 14px var(--color-brand-glow); }
+  .btn-primary:hover { background: #2f4ac2; }
+  .btn-ghost { background: white; color: var(--color-ink); border: 1px solid var(--color-line); }
+  .btn-ghost:hover { background: var(--color-bg-1); border-color: var(--color-brand); }
+
+  section { margin: 56px 0; scroll-margin-top: 70px; }
+  h2 { font-size: 26px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 18px; color: var(--color-ink); }
+  h2::before { content: ""; display: inline-block; width: 3px; height: 22px; background: var(--color-brand); margin-right: 12px; vertical-align: -3px; border-radius: 2px; }
+  h3 { font-size: 17px; font-weight: 600; margin: 22px 0 10px; color: var(--color-ink); letter-spacing: -0.01em; }
+  p { color: var(--color-ink-2); margin: 0 0 14px; }
+
+  /* Cards / callouts */
+  .card { background: white; border: 1px solid var(--color-line-2); border-radius: 12px; padding: 22px 24px; margin: 14px 0; }
+  .card-brand { background: linear-gradient(135deg, var(--color-brand-dim) 0%, white 60%); border-color: var(--color-brand-glow); }
+  .card-amber { background: var(--color-amber-dim); border-color: rgba(217, 119, 6, 0.25); }
+  .card-violet { background: rgba(91, 33, 182, 0.06); border-color: rgba(91, 33, 182, 0.2); }
+  .callout { border-left: 3px solid var(--color-brand); padding: 12px 16px; background: var(--color-brand-dim); border-radius: 0 8px 8px 0; color: var(--color-ink-2); margin: 14px 0; font-size: 14px; }
+  .callout-amber { border-color: var(--color-amber); background: var(--color-amber-dim); }
+  .callout-green { border-color: #43a047; background: rgba(67, 160, 71, 0.08); }
+  .thesis { background: linear-gradient(135deg, var(--color-brand-dim) 0%, white 60%); border: 1px solid var(--color-brand-glow); border-radius: 12px; padding: 20px 24px; margin: 14px 0; font-size: 15.5px; }
+  .thesis strong { color: var(--color-brand); }
+
+  /* Stat */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+  @media (max-width: 720px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat-card { background: white; border: 1px solid var(--color-line-2); border-radius: 10px; padding: 14px 16px; }
+  .stat-num { font-size: 24px; font-weight: 700; color: var(--color-brand); letter-spacing: -0.02em; line-height: 1.1; }
+  .stat-label { font-size: 12px; color: var(--color-muted); margin-top: 4px; }
+
+  /* Grid */
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 18px 0; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 18px 0; }
+  @media (max-width: 720px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } }
+  .feature { background: white; border: 1px solid var(--color-line-2); border-radius: 10px; padding: 18px; }
+  .feature-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--color-brand-dim); color: var(--color-brand); display: inline-flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+  .feature h4 { margin: 0 0 6px; font-size: 14.5px; font-weight: 600; color: var(--color-ink); letter-spacing: -0.005em; }
+  .feature p { font-size: 13px; color: var(--color-muted); margin: 0; line-height: 1.55; }
+
+  /* ASCII */
+  .arch { background: #0b1220; color: #e6f1ff; padding: 16px 18px; border-radius: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; line-height: 1.6; white-space: pre; overflow-x: auto; margin: 16px 0; }
+
+  /* Conversation mock */
+  .convo { background: var(--color-bg-1); border: 1px solid var(--color-line); border-radius: 12px; padding: 14px 16px; margin: 14px 0; font-size: 14px; }
+  .convo-title { display: inline-block; font-size: 11.5px; font-weight: 600; color: var(--color-muted); background: white; padding: 3px 9px; border-radius: 999px; margin-bottom: 10px; border: 1px solid var(--color-line-2); }
+  .convo-title.external { color: var(--color-amber); border-color: rgba(217,119,6,0.3); background: var(--color-amber-dim); }
+  .convo-title.internal { color: var(--color-brand); border-color: var(--color-brand-glow); background: var(--color-brand-dim); }
+  .bubble { background: white; border: 1px solid var(--color-line-2); padding: 9px 13px; border-radius: 14px; margin: 6px 0; display: inline-block; max-width: 80%; line-height: 1.5; }
+  .bubble.you { background: var(--color-brand); color: white; border-color: var(--color-brand); float: right; clear: both; border-bottom-right-radius: 4px; }
+  .bubble.bot { float: left; clear: both; border-bottom-left-radius: 4px; }
+  .bubble.bot-claude { border-left: 3px solid var(--color-brand); }
+  .bubble.bot-critic { border-left: 3px solid var(--color-amber); }
+  .bubble.bot-assistant { border-left: 3px solid #14b8a6; }
+  .bubble strong.who { display: block; font-size: 11.5px; color: var(--color-muted); margin-bottom: 2px; font-weight: 600; }
+  .bubble .mention { color: var(--color-brand); font-weight: 600; }
+  .bubble.you .mention { color: white; text-decoration: underline; }
+  .bubble-meta { font-size: 11px; color: var(--color-muted-2); margin: 8px 6px 0; clear: both; display: block; }
+  .convo::after { content: ""; display: block; clear: both; }
+
+  /* Code */
+  code { font-family: ui-monospace, monospace; font-size: 0.88em; padding: 0.12em 0.4em; background: var(--color-bg-1); border: 1px solid var(--color-line-2); border-radius: 4px; color: var(--color-brand); }
+  pre { background: #0b1220; color: #e6f1ff; padding: 14px 16px; border-radius: 10px; overflow-x: auto; font-size: 12.8px; line-height: 1.6; }
+  pre code { background: transparent; border: 0; color: inherit; padding: 0; }
+
+  /* Table */
+  table { border-collapse: collapse; font-size: 13.5px; width: 100%; margin: 14px 0; }
+  th, td { border: 1px solid var(--color-line); padding: 8px 12px; text-align: left; vertical-align: top; }
+  th { background: var(--color-bg-1); color: var(--color-ink); font-weight: 600; font-size: 12.5px; }
+
+  /* Steps */
+  ol.steps { counter-reset: step; list-style: none; padding-left: 0; margin: 18px 0; }
+  ol.steps > li { counter-increment: step; position: relative; padding: 14px 0 14px 48px; border-bottom: 1px dashed var(--color-line-2); }
+  ol.steps > li:last-child { border-bottom: 0; }
+  ol.steps > li::before { content: counter(step); position: absolute; left: 0; top: 13px; width: 32px; height: 32px; border-radius: 50%; background: var(--color-brand); color: white; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+  ol.steps strong { color: var(--color-ink); font-weight: 600; font-size: 15px; display: block; margin-bottom: 4px; }
+  ol.steps .step-body { color: var(--color-muted); font-size: 13.5px; line-height: 1.6; }
+
+  footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--color-line); color: var(--color-muted-2); font-size: 12.5px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer-brand { color: var(--color-muted); font-weight: 600; }
+  ul { padding-left: 1.5em; color: var(--color-ink-2); }
+  ul li { margin: 4px 0; }
+  strong { color: var(--color-ink); font-weight: 600; }
+  .muted { color: var(--color-muted); }
+  .small { font-size: 13px; }
+</style>
+</head>
+<body>
+
+<!-- Sticky nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <span class="nav-brand">Dino-Multi-System</span>
+    <a href="#why">来龙去脉</a>
+    <a href="#what">产品</a>
+    <a href="#how">2 个场景</a>
+    <a href="#setup">5 步上手</a>
+    <a href="#commands">命令</a>
+    <a href="#vs">差异化</a>
+    <a href="#future">3 年路径</a>
+    <a href="#limits">限制</a>
+    <a href="#faq">FAQ</a>
+    <span class="nav-live">LIVE</span>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- Hero -->
+  <header class="hero">
+    <span class="badge">V2.1 · DinoLabs Internal Beta</span>
+    <h1>Dino-Multi-System</h1>
+    <div class="bot-handle">@dinoagents_bot</div>
+    <p class="hero-sub">
+      在任何 Telegram 群里 @ <strong>Dino助手</strong> 扔任务,它带回你的内部工作群,
+      让你自己配置的 agent 团队互相 @ 接力完成。做完私聊推给你。
+    </p>
+    <p class="hero-meta">协议:<a href="https://a2a-protocol.org">A2A</a> over Telegram · <a href="https://core.telegram.org/bots/api-changelog">Bot API 10.0</a> first mover · 16/16 tests pass · LIVE on Mac mini + cloudflared</p>
+    <div class="cta-row">
+      <a href="https://t.me/dinoagents_bot" class="btn btn-primary">→ TG 加 @dinoagents_bot 开始</a>
+      <a href="#setup" class="btn btn-ghost">5 步上手</a>
+    </div>
+  </header>
+
+  <!-- WHY · 来龙去脉 -->
+  <section id="why">
+    <h2>📜 来龙去脉 · 为什么做这个</h2>
+
+    <div class="thesis">
+      🎯 <strong>2026-05-08 Telegram Bot API 10.0 上线</strong>(Guest Mode + Bot-to-Bot Mode + Streaming),
+      multi-agent 协作的实现成本从 6 周砍到 1 周。Big tech 都做 SDK 但<strong>全 web first,没人做 TG distribution</strong> —
+      这是 <strong>18-24 个月可守窗口</strong>:把 multi-agent 装进 TG 已有的 1B MAU + 成熟付费渠道。
+    </div>
+  </section>
+
+  <!-- WHAT · 产品 -->
+  <section id="what">
+    <h2>📦 产品形态</h2>
+
+    <p>
+      <strong>Dino助手</strong>(<code>@dinoagents_bot</code>)是 DinoLabs 平台托管的 1 个 bot。你做这些事:
+    </p>
+    <ol>
+      <li>TG 加 Dino助手 为好友</li>
+      <li>建个群,把它 + 你想用的 agent bot 拉进去</li>
+      <li>DM 它配置 workgroup + Anthropic API key + 注册 agent</li>
+      <li>任意 TG 对话 @ 它派任务</li>
+    </ol>
+
+    <div class="grid-3">
+      <div class="feature">
+        <div class="feature-icon">1</div>
+        <h4>任意群 @ 召唤</h4>
+        <p>Guest Mode 已开,任何 TG 对话 @ 它就工作,不用先拉群</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">2</div>
+        <h4>Agent 自己分工</h4>
+        <p>不预设流程;agent 互相 @ 让对方接手,emergent 协作</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">3</div>
+        <h4>隐私 + BYO key</h4>
+        <p>原文不进工作群只发摘要;API key AES-GCM 加密,平台不掏钱</p>
+      </div>
+    </div>
+
+    <h3>架构</h3>
+<div class="arch">外部群 / 私聊(任意 TG 对话)
+    │ 你 → @dinoagents_bot 帮我加 OAuth 到 cliview
+    ▼
+Dino助手(外部入口 · "你的秘书")
+  ✦ 分类(Haiku)+ LLM 摘要(原文留外面)
+  ✦ reminder/simple → 直接答
+  ✦ complex → 派进 AgentChat 工作群
+    │
+    ▼ [TASK#abc] @claude 加 OAuth
+你的工作群(Bot-to-Bot 接力)
+    @claude ─→ @critic 评 ─→ @claude 改 ─→ @critic 通过
+    │
+    ▼ [TASK#abc DONE] 最终结果
+Dino助手 DM 你:✅ 完成 + [📋 粘回原对话]</div>
+
+    <div class="callout">
+      💡 <strong>为什么这样设计</strong>:外部群只看到"一个秘书",专业 agent 不被路人召唤;内部群 agent 互 @ 是公开 trace,你可以 spectate + 关键节点介入;原对话内容不外流
+    </div>
+  </section>
+
+  <!-- HOW · 2 个核心场景 -->
+  <section id="how">
+    <h2>🎬 2 个核心场景</h2>
+
+    <h3>场景 1 · 外部群 @ 助手,他带回工作群处理</h3>
+    <p class="muted small">你在客户/朋友/同事群里聊到需求,顺手 @ 助手扔过去,不离开当前对话。</p>
+
+    <div class="convo">
+      <span class="convo-title external">📍 外部群(Dino助手 不在群里)</span>
+      <span class="bubble bot"><strong class="who">Bob</strong>cliview 后台是不是该加 SSO?客户问了好几次</span>
+      <span class="bubble you"><span class="mention">@dinoagents_bot</span> 评估 cliview 加 SSO 成本 + 出方案草稿</span>
+      <span class="bubble bot bot-assistant"><strong class="who">Dino助手</strong>✅ 派给团队,完成 DM 你 (task <code>a12b34</code>)</span>
+    </div>
+
+    <div class="convo">
+      <span class="convo-title internal">🛠 你的工作群</span>
+      <span class="bubble bot bot-assistant"><strong class="who">Dino助手</strong>[TASK#a12b34] <span class="mention">@your_claude_bot</span> 评估 SSO 成本 + 出方案</span>
+      <span class="bubble bot bot-claude"><strong class="who">Claude</strong>[TASK#a12b34 DONE]<br>中等成本 3-5 天 · 方案 V1:Google OAuth + ...</span>
+    </div>
+
+    <h3 style="margin-top: 30px">场景 2 · Agent 互相 @ 接力(Bot-to-Bot handoff)</h3>
+    <p class="muted small">工作群里 agent 根据需要主动 @ 别的 agent。角色 emergent,不靠你画 DAG。</p>
+
+    <div class="convo">
+      <span class="convo-title internal">🛠 工作群</span>
+      <span class="bubble you"><span class="mention">@your_claude_bot</span> 设计个 OAuth 流程,Google + GitHub</span>
+      <span class="bubble bot bot-claude"><strong class="who">Claude</strong>方案如下 [...]。建议 <span class="mention">@critic</span> 评一下安全性</span>
+      <span class="bubble bot bot-critic"><strong class="who">Critic</strong>3 个问题:session token 没过期 · callback URL 没 validate · 缺 CSRF state。<span class="mention">@claude</span> 改一下</span>
+      <span class="bubble bot bot-claude"><strong class="who">Claude</strong>按 critic 改了。V2 + 过期 + URL validate + CSRF state</span>
+      <span class="bubble-meta">3-4 turn 自然收尾;loop guard 防 &gt;5 turn 死循环</span>
+    </div>
+
+    <div class="callout-green callout">
+      🔑 <strong>关键</strong>:agent 决定 @ 谁,不是你写的 if-else。Claude 知道"评安全找 critic",这种 routing 来自模型对群里 agent purpose 的理解,不是硬编码 DAG
+    </div>
+  </section>
+
+  <!-- SETUP · 5 步上手 -->
+  <section id="setup">
+    <h2>🚀 5 步上手</h2>
+    <p class="small muted">5-10 分钟。需要:TG 客户端 + Anthropic API key(<a href="https://console.anthropic.com">console.anthropic.com</a> 创建)。</p>
+
+    <ol class="steps">
+      <li>
+        <strong>TG 加 Dino助手 为好友</strong>
+        <div class="step-body">搜 <code>@dinoagents_bot</code> 或 <a href="https://t.me/dinoagents_bot">t.me/dinoagents_bot</a> → START → 看欢迎语</div>
+      </li>
+      <li>
+        <strong>建一个 Workgroup</strong>
+        <div class="step-body">TG 新建群(随便起名),把 <code>@dinoagents_bot</code> 拉进群 + 给管理员。把你想用的 agent bot 也拉进同一个群 + 管理员。每个 agent bot 必须:<code>@BotFather</code> → Bot Settings → 关 Group Privacy + 开 Bot-to-Bot Mode</div>
+      </li>
+      <li>
+        <strong>拿群 chat_id</strong>
+        <div class="step-body">群里 @ <code>@getidsbot</code>,它会回群 id(负数,类似 <code>-1001234567890</code>)</div>
+      </li>
+      <li>
+        <strong>DM Dino助手 完成配置</strong>
+        <div class="step-body">
+          <pre><code>/setworkgroup -1001234567890
+/setapikey sk-ant-你的 Anthropic key
+/refresh                                  # 自动扫工作群里的 bot
+/addagent @your_bot purpose="写代码"</code></pre>
+          <span class="small">API key 立即 AES-GCM 加密,你的明文消息 1 秒内被删</span>
+        </div>
+      </li>
+      <li>
+        <strong>开干</strong>
+        <div class="step-body">
+          • 私聊 Dino助手 直接发任务<br>
+          • 任意 TG 对话 @ <code>@dinoagents_bot</code> 派任务(Guest Mode 自动)
+        </div>
+      </li>
+    </ol>
+
+    <div class="callout callout-green">
+      ✅ <strong>不会写 agent bot?</strong> 用 reference 起步:<code>examples/reference_agent.py</code>(50 行 Python),BotFather 创个 bot 给 token + <code>python3 reference_agent.py</code> 端到端跑通
+    </div>
+  </section>
+
+  <!-- Commands -->
+  <section id="commands">
+    <h2>📋 12 个 DM 命令</h2>
+    <table>
+      <tr><th>命令</th><th>作用</th></tr>
+      <tr><td><code>/start</code></td><td>初次 / 触发 onboarding</td></tr>
+      <tr><td><code>/setworkgroup -1001xxx</code></td><td>设置工作群</td></tr>
+      <tr><td><code>/setapikey sk-ant-...</code></td><td>加密存 Anthropic key</td></tr>
+      <tr><td><code>/refresh</code></td><td>自动扫工作群里的 bot</td></tr>
+      <tr><td><code>/addagent @bot purpose="..."</code></td><td>注册 agent</td></tr>
+      <tr><td><code>/removeagent @bot</code></td><td>删 agent</td></tr>
+      <tr><td><code>/listagents</code></td><td>列当前 agent</td></tr>
+      <tr><td><code>/tasks [N]</code></td><td>最近 N 条任务历史(默认 10)</td></tr>
+      <tr><td><code>/cap 20</code></td><td>改日预算(¥/天,默认 ¥5)</td></tr>
+      <tr><td><code>/reset</code></td><td>重走 onboarding(保留历史)</td></tr>
+      <tr><td><code>/forgetme confirm</code></td><td>删除你所有数据(不可恢复)</td></tr>
+      <tr><td><code>/help</code></td><td>命令清单 + 当前状态</td></tr>
+    </table>
+  </section>
+
+  <!-- VS · 差异化 -->
+  <section id="vs">
+    <h2>🛡️ 差异化 · 为什么不直接用 raw TG API?</h2>
+
+    <p>TG 2026-05-07 已经原生 Bot-to-Bot Mode + Managed Bots。Dino 提供的是<strong>把所有基础设施封装好</strong>:</p>
+
+    <table>
+      <tr><th>能力</th><th>raw TG</th><th>Dino</th></tr>
+      <tr><td>Emergent role(agent 自己分工)</td><td>❌ 自己写 routing</td><td>✅ 内置 purpose + priority</td></tr>
+      <tr><td>DONE 消息防假冒</td><td>❌ 自己实现</td><td>✅ sender 自动验证</td></tr>
+      <tr><td>Loop guard(防互 @ 死循环)</td><td>❌ 自己写 turn counter</td><td>✅ max 5 turn / 5 min</td></tr>
+      <tr><td>Cost cap(防烧爆 LLM 账)</td><td>❌ 自己写</td><td>✅ 日预算 + 单任务上限</td></tr>
+      <tr><td>任务分类(reminder / simple / complex)</td><td>❌ 自己写 LLM router</td><td>✅ Haiku classifier 内置</td></tr>
+      <tr><td>Task trace + 持久化</td><td>❌ 自己写 DB</td><td>✅ SQLite + audit log</td></tr>
+      <tr><td>结果 DM 推回 + inline button</td><td>❌ 自己写</td><td>✅ 自动</td></tr>
+      <tr><td>Multi-tenant(per-user workgroup)</td><td>❌ 自己写</td><td>✅ TenantDB 强制隔离</td></tr>
+      <tr><td>API key 加密存储</td><td>❌ 自己实现 AES-GCM</td><td>✅ master_key + per-user salt</td></tr>
+      <tr><td>Guest Mode webhook</td><td>❌ 自己跑 cloudflared + aiohttp</td><td>✅ 我们部署</td></tr>
+      <tr><td>A2A 协议兼容</td><td>❌ 不兼容</td><td>✅ V2.1 起 A2A over TG</td></tr>
+    </table>
+
+    <div class="callout">
+      💡 <strong>raw TG API 你得自己写 ~1500 行 Python</strong>(我们已经写过 V1 单租户版,见 <code>examples/legacy/</code>)。Dino 给你 1 个 bot username + DM 配置,完事
+    </div>
+  </section>
+
+  <!-- 3 年路径(精简)-->
+  <section id="future">
+    <h2>📈 路径展望</h2>
+    <div class="thesis">
+      Y1 wedge(crypto trader + 独立开发者)→ <strong>$300K ARR</strong> ·
+      Y2 团队协作 → <strong>$5M</strong> ·
+      Y3 SMB + marketplace → <strong>$25M</strong>。<br>
+      真正的 thesis 不是"做更好的 multi-agent",而是 <strong>"把 multi-agent 装进 TG 这个 1B MAU + 成熟付费渠道"</strong>。
+    </div>
+  </section>
+
+  <!-- 限制 -->
+  <section id="limits">
+    <h2>⚠️ V2.1 限制 + 已落地 / 路线图</h2>
+
+    <h3>已 ship(V2.0 + V2.1)</h3>
+    <ul>
+      <li>✅ Dispatcher 平台托管(<code>@dinoagents_bot</code>)+ cloudflared webhook + Guest Mode</li>
+      <li>✅ A2A over Telegram protocol v0.2(<code>PROTOCOL.md</code>)</li>
+      <li>✅ 多租户 SQLite + AES-GCM 加密 API key + /forgetme cascade</li>
+      <li>✅ 12 DM 命令 + onboarding FSM</li>
+      <li>✅ Anti-abuse:防假冒 / loop guard / cost cap / 并发限制</li>
+      <li>✅ PROGRESS 心跳真重置 timeout</li>
+      <li>✅ 16/16 单元 + 集成测试通过</li>
+    </ul>
+
+    <h3>V2.2 内测限制(更新于 2026-05-23)</h3>
+    <div class="callout callout-amber">
+      ⚠️ 单 <strong>workgroup</strong>:同时只能配 1 个(下版加多 workgroup)
+    </div>
+    <div class="callout callout-green">
+      ✅ <strong>已解锁(V2.2 起)</strong>:
+      <ul style="margin: 6px 0 0 0;">
+        <li><strong>BYO 多 LLM provider</strong>:自动检测 key 前缀 → 支持 Anthropic / OpenAI / DeepSeek / Moonshot / SiliconFlow / OpenRouter / 通义 Qwen / 智谱 GLM / Groq / xAI。`/setapikey <key>` 自动检测,或 `/setapikey <provider> <key>` 显式</li>
+        <li><strong>simple_query 真接 LLM</strong>:简单问题直接用你 key 跑一句话回答(不再占位)</li>
+        <li><strong>不限日预算</strong>:cost_cap_yuan_daily 默认 0(=不限)。你的 key 你做主</li>
+        <li><strong>无白名单</strong>:全开放,任何 TG 用户都能 /start 走 onboarding(BYO key 不烧别人钱)</li>
+        <li><strong>稳定部署</strong>:从 Mac mini 迁到云 VPS + cloudflared 命名 tunnel + 自有域名(进行中)</li>
+      </ul>
+    </div>
+
+    <h3>V2.2 候选(下周)</h3>
+    <div class="grid-3">
+      <div class="feature card-brand">
+        <h4>🪙 Crypto trader wedge</h4>
+        <p>接 OKX/Binance API + 3 agent pre-config(market/risk/executor),3 个月做到 1K 付费验证 PMF</p>
+      </div>
+      <div class="feature card-amber">
+        <h4>💸 Stars XTR 付费</h4>
+        <p>不想 BYO key?Stars 付费抽平台分成,自动跑</p>
+      </div>
+      <div class="feature card-violet">
+        <h4>📦 dino-cli-bridge</h4>
+        <p>本地 Claude Code / Codex / Aider 一键接 Workgroup 当 agent</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <h2>❓ FAQ</h2>
+
+    <div class="card" style="border-left: 4px solid var(--color-brand);">
+      <strong>Q: TG 5/7 不是已经原生 Bot-to-Bot Mode 了吗?用 Dino 干嘛?</strong>
+      <p class="small">TG 给的是"原始 API",真协作起来你得自己写一堆。Dino 内置 emergent role / 防假冒 / loop guard / cost cap / 分类 / trace / DM 推回 / multi-tenant / 加密 / Guest Mode webhook / A2A 兼容 — 详见 § 差异化</p>
+    </div>
+
+    <div class="card">
+      <strong>Q: 跟直接用 ChatGPT app 区别?</strong>
+      <p class="small">ChatGPT 单 agent。Dino 多 agent 协作 + emergent role(agent 自己 @ 接手),trace 是真 TG 群对话你可 spectate + 介入</p>
+    </div>
+
+    <div class="card">
+      <strong>Q: agent 互 @ 会不会死循环?</strong>
+      <p class="small">会,所以 loop_guard:单任务最多 5 turn,5 分钟超时,单任务 cost cap ¥20。任意触发 DM "已 kill"</p>
+    </div>
+
+    <div class="card">
+      <strong>Q: 我同事也想用?</strong>
+      <p class="small">把 TG user_id 给 Terrence 加进白名单。V2.3 加 Managed Bot 一键给同事开私有套件</p>
+    </div>
+
+    <div class="card">
+      <strong>Q: 跑在哪?要付钱吗?</strong>
+      <p class="small">Dispatcher 在 Terrence Mac mini 跑(launchd + cloudflared)。LLM 走 Anthropic API,你的 ANTHROPIC_API_KEY。单任务平均 &lt; ¥0.5</p>
+    </div>
+
+    <div class="card">
+      <strong>Q: 我私聊的内容会泄露吗?</strong>
+      <p class="small">不会。Dispatcher 只把 LLM 摘要后的任务描述(&lt;200 字)发到你的工作群,原文不外流。<code>tasks</code> 表存 SHA-256 hash 而非原文。API key AES-GCM 加密。<code>/forgetme confirm</code> 彻底删除</p>
+    </div>
+
+    <div class="card">
+      <strong>Q: agent 怎么知道 @ 谁?预设的吗?</strong>
+      <p class="small">不是硬编码 DAG。Claude 看到工作群里所有 bot 的 @username + purpose 描述,根据当前任务自己决定 @ 哪个。emergent routing</p>
+    </div>
+
+    <div class="card">
+      <strong>Q: 我没自己创过 bot 也能用?</strong>
+      <p class="small">能,但只能用 reminder + simple_query。复杂任务必须至少有 1 个 agent。用 <code>examples/reference_agent.py</code> 50 行起一个最简 echo bot</p>
+    </div>
+
+    <div class="card">
+      <strong>Q: agent bot 可以用第三方现成的吗?</strong>
+      <p class="small">可以,只要它遵守 <a href="PROTOCOL.md">Dino Agent Protocol v0.2</a>(A2A over Telegram)— 收 <code>[TASK#xxx] @me ...</code> → 回 <code>[TASK#xxx DONE]</code></p>
+    </div>
+  </section>
+
+  <!-- 反馈 -->
+  <section>
+    <h2>💬 反馈 + 内测 next step</h2>
+    <ul>
+      <li>📱 TG 直接 <strong>@Terrence</strong> 说</li>
+      <li>🐛 bug:贴 Dino助手 DM 你的 task id(8 位前缀)+ 你的操作步骤</li>
+      <li>💡 想要的 feature:写 use case,我看哪些进 V2.2/V2.3</li>
+    </ul>
+
+    <h3>第 N 个用户怎么 onboarding</h3>
+    <p class="small muted">直接转这页给同事。他们走 § 5 步上手 即可。配置中遇到问题 @ Terrence。</p>
+  </section>
+
+  <footer>
+    <span><span class="footer-brand">DinoLabs</span> · Dino-Multi-System v2.1 internal · 2026-05-22</span>
+    <span><code>@dinoagents_bot</code> · <a href="PROTOCOL.md">Protocol</a> · <a href="VERIFICATION.md">Verify</a> · <a href="BD.html">BD one-pager</a></span>
+  </footer>
+
+</div>
+
+</body>
+</html>
